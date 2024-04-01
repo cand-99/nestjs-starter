@@ -15,6 +15,7 @@ import { User } from '@prisma/client';
 import { PaginatedResult } from 'src/helper/paginator';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IUserWithoutPassword } from './interface/IUserWithoutPassword';
+import { ValidateMongoId } from 'src/pipes/validate-mongo-Id.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -47,7 +48,7 @@ export class UsersController {
   @Patch(':id')
   @Roles(Role.SUPERADMIN, Role.ADMIN)
   async update(
-    @Param('id') id: string,
+    @Param('id', ValidateMongoId) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<IUserWithoutPassword> {
     return await this.userService.update(id, updateUserDto);
